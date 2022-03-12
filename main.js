@@ -1,5 +1,7 @@
 // entry point of command line
 
+let helpFunc = require("../fileOrganiser/commands/help")
+
 let inputArr = process.argv.slice(2)
 let command = inputArr[0]
 switch(command){
@@ -11,5 +13,9 @@ switch(command){
         break
     case "help":
         //call help function
+        helpFunc.help()
+        break
+    default:
+        console.log("command not recognised :/")
         break
 }
