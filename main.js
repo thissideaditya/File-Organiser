@@ -4,6 +4,7 @@ let helpFunc = require("../fileOrganiser/commands/help")
 
 let inputArr = process.argv.slice(2)
 let command = inputArr[0]
+let path = inputArr[1]
 switch(command){
     case "tree":
         //call tree function
