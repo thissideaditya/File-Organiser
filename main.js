@@ -1,6 +1,7 @@
 // entry point of command line
 
-let helpFunc = require("../fileOrganiser/commands/help")
+let helpFunc = require("./commands/help")
+let orgFunc = require("./commands/organise")
 
 let inputArr = process.argv.slice(2)
 let command = inputArr[0]
@@ -11,6 +12,7 @@ switch(command){
         break
     case "organise":
     //call organise function
+    orgFunc.organise(path)
         break
     case "help":
         //call help function

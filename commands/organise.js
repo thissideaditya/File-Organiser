@@ -1,4 +1,5 @@
 const fs = require("fs"); //fs module
+const { extname } = require("path");
 const path = require("path"); //path module
 let types = {
     media: ["mp4", "mkv", "mp3"],
@@ -29,17 +30,37 @@ function organise(srcPath) {
 
   // Reads the contents of the directory -> basically reads the names of the files present in the directory
   let allFiles = fs.readdirSync(srcPath)
-  console.log(allFiles)
+ // console.log(allFiles)
 
   //4. traverese over all the files and classify them on the basis of their extension.
 
   for(let i = 0; i < allFiles.length; i++){
     //   let ext = allFiles[i].split(".")[1]
-      let ext = path.extname(allFiles[i]) // gives extenison name
-      console.log(ext)
+
+  let fullPathOfFile = path.join(srcPath, allFiles[i])
+  // lstatSync gives info about the link provided
+  let isFile = fs.lstatSync(fullPathOfFile).isFile()
+  if(isFile){
+      // get ext name
+    let ext = path.extname(allFiles[i]).split(".")[1] // gives extenison name
+     // console.log(ext)
+     // get floder name from extension
+    let folderName = getFolderName(ext)
+     // copy from src folder to dest folder
+    copyFileToDest(srcPath, fullPathOfFile, folderName)
+    }
   }
+}
+
+function getFolderName(ext){
 
 
+}
+
+function copyFileToDest(srcPath, fullPathOfFile, folderName){
+
+
+    
 }
 
 let srcPath = "/Users/adityachaurasia/Desktop/Code/Web D/Learning/Node/fileOrganiser/downloads"
