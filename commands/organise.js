@@ -8,7 +8,7 @@ let types = {
     images: ['png','jpg','jpeg']
 }
 
-function organize(srcPath) {
+function organise(srcPath) {
   //1. to check if srcPath is present
   if (srcPath == undefined) {
     //The process.cwd() method returns the current working directory of the Node.js process.
@@ -17,13 +17,13 @@ function organize(srcPath) {
     // console.log("source path is ",srcPath);
   }
 
-  //2. to create a directory-> organized_files
-  // let organizedFiles = srcPath + "/" + "organized_files";
-  let organizedFiles = path.join(srcPath, "organized_files");
-  console.log("organized files folder path is ", organizedFiles);
-  if (fs.existsSync(organizedFiles) == false) {
-    //organizedfiles naam ka folder exist nhi krta to ek folder bana do warna rhne do
-    fs.mkdirSync(organizedFiles);
+  //2. to create a directory-> organised_files
+  // let organisedFiles = srcPath + "/" + "organised_files";
+  let organisedFiles = path.join(srcPath, "organised_files");
+  console.log("organised files folder path is ", organisedFiles);
+  if (fs.existsSync(organisedFiles) == false) {
+    //organisedfiles naam ka folder exist nhi krta to ek folder bana do warna rhne do
+    fs.mkdirSync(organisedFiles);
   } else console.log("folder already exists");
 
   //3. scan the entire srcPath(doenloads folder in this case)
@@ -39,7 +39,7 @@ function organize(srcPath) {
       let fullPathOfFile = path.join(srcPath, allFiles[i]);
       console.log(fullPathOfFile);
       //1. check if it is a file or folder
-      //lstatsync gives the information regarding the link provided ,
+      //lstatsync gives the information(file or folder) regarding the link provided ,
       let isThisAFile = fs.lstatSync(fullPathOfFile).isFile(); //true-> file hai to  or false-> agar folder h 
       console.log(allFiles[i] + " is " + isThisAFile);
       if (isThisAFile) {
@@ -72,7 +72,7 @@ function getFolderName(ext) {
 
 function copyFileToDest(srcPath, fullPathOfFile, folderName) {
   //1. folderName ka path banana h
-  let destFolderPath = path.join(srcPath, "organized_files", folderName); //....../downloads/organized_files/archives
+  let destFolderPath = path.join(srcPath, "organised_files", folderName); //....../downloads/organised_files/archives
   // console.log(des);
   //2 check folder if exists, if it does not, then make folder
 
@@ -90,9 +90,9 @@ function copyFileToDest(srcPath, fullPathOfFile, folderName) {
 }
 
 
-// let srcPath="/Users/abhishekgoel/Desktop/Desktop/AbhishekGoel/FJP5/Node/fileOrganizer/downloads"
+// let srcPath="/Users/abhishekgoel/Desktop/Desktop/AbhishekGoel/FJP5/Node/fileOrganiser/downloads"
 // organize(srcPath);
 
 module.exports = {
-  organize:organize
+  organise:organise
 }
