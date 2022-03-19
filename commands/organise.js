@@ -1,5 +1,5 @@
 const fs = require("fs"); //fs module
-const { extname } = require("path");
+const extname = require("path");
 const path = require("path"); //path module
 let types = {
     media: ["mp4", "mkv", "mp3"],
@@ -19,8 +19,8 @@ function organise(srcPath) {
   }
 
   //2. to create a directory-> organized_files
-  let organisedFiles = srcPath + "/" + "organized_files"
-  console.log("organized files folder path is ", organisedFiles);
+  let organisedFiles = srcPath + "/" + "organised_files"
+  console.log("organised files folder path is ", organisedFiles);
   if (fs.existsSync(organisedFiles) == false) {
     //organizedfiles naam ka folder exist nhi krta to ek folder bana do warna rhne do
     fs.mkdirSync(organisedFiles);
@@ -54,13 +54,26 @@ function organise(srcPath) {
 
 function getFolderName(ext){
 
-
+  for(let key in types){
+    for(let i = 0; i < types[key].length; i++){
+      if(types[key] == ext){
+        return key
+      }
+    }
+  }
 }
 
 function copyFileToDest(srcPath, fullPathOfFile, folderName){
 
+  let destFolderPath = path.join(srcPath, "organised_files", folderName)
+  if(!fs.existsSync(destFolderPath)){
+    fs.mkdirSync(destFolderPath)
+  }
 
-    
+  let fileName = path.basename(fullPathOfFile)
+  let destFileName = path.join(destFolderPath, fileName)
+  fs.copyFileSync(fullPathOfFile, destFileName)
+
 }
 
 let srcPath = "/Users/adityachaurasia/Desktop/Code/Web D/Learning/Node/fileOrganiser/downloads"
