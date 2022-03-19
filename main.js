@@ -14,12 +14,10 @@ switch (command) { //organizee
     case "organise":
         //call organize function
         orgFunc.organise(path);
-        // console.log("organize function called and executed succesfully on path "+ path);
         break;
     case "help":
         //call help function
         helpFunc.help();
-        // console.log("help function called and executed succesfully");
         break;
     default:
         console.log("command not recognized :/")
