@@ -1,5 +1,4 @@
 const fs = require("fs"); //fs module
-const extname = require("path");
 const path = require("path"); //path module
 let types = {
     media: ["mp4", "mkv", "mp3"],
@@ -9,7 +8,7 @@ let types = {
     images: ['png','jpg','jpeg']
 }
 
-function organise(srcPath) {
+function organize(srcPath) {
   //1. to check if srcPath is present
   if (srcPath == undefined) {
     //The process.cwd() method returns the current working directory of the Node.js process.
@@ -19,62 +18,81 @@ function organise(srcPath) {
   }
 
   //2. to create a directory-> organized_files
-  let organisedFiles = srcPath + "/" + "organised_files"
-  console.log("organised files folder path is ", organisedFiles);
-  if (fs.existsSync(organisedFiles) == false) {
+  // let organizedFiles = srcPath + "/" + "organized_files";
+  let organizedFiles = path.join(srcPath, "organized_files");
+  console.log("organized files folder path is ", organizedFiles);
+  if (fs.existsSync(organizedFiles) == false) {
     //organizedfiles naam ka folder exist nhi krta to ek folder bana do warna rhne do
-    fs.mkdirSync(organisedFiles);
-  } else console.log("folder already exists")
-  
-  //3. scan the entire srcPath
+    fs.mkdirSync(organizedFiles);
+  } else console.log("folder already exists");
 
-  // Reads the contents of the directory -> basically reads the names of the files present in the directory
-  let allFiles = fs.readdirSync(srcPath)
- // console.log(allFiles)
+  //3. scan the entire srcPath(doenloads folder in this case)
 
-  //4. traverese over all the files and classify them on the basis of their extension.
+  //Reads the contents of the directory.-> basically reads the names of files present in directory
+    let allFiles = fs.readdirSync(srcPath);
+    // console.log(allFiles);
 
-  for(let i = 0; i < allFiles.length; i++){
-    //   let ext = allFiles[i].split(".")[1]
-
-  let fullPathOfFile = path.join(srcPath, allFiles[i])
-  // lstatSync gives info about the link provided
-  let isFile = fs.lstatSync(fullPathOfFile).isFile()
-  if(isFile){
-      // get ext name
-    let ext = path.extname(allFiles[i]).split(".")[1] // gives extenison name
-     // console.log(ext)
-     // get floder name from extension
-    let folderName = getFolderName(ext)
-     // copy from src folder to dest folder
-    copyFileToDest(srcPath, fullPathOfFile, folderName)
+  //4.trvaerse over all the files and classify them on the basis of their extension (.pdf , .mp3)
+    for (let i = 0; i < allFiles.length; i++){
+      // let ext = allFiles[i].;
+      //extname returns the extension of the file
+      let fullPathOfFile = path.join(srcPath, allFiles[i]);
+      console.log(fullPathOfFile);
+      //1. check if it is a file or folder
+      //lstatsync gives the information regarding the link provided ,
+      let isThisAFile = fs.lstatSync(fullPathOfFile).isFile(); //true-> file hai to  or false-> agar folder h 
+      console.log(allFiles[i] + " is " + isThisAFile);
+      if (isThisAFile) {
+        //1.1 get ext name
+        let ext = path.extname(allFiles[i]).split(".")[1];
+        // console.log(ext);
+        //1.2 get folder name from extension
+        let folderName = getFolderName(ext); //archives
+        // console.log(folderName);
+        //1.3 copy from src folder (srcPath) and paste in dest folder (folder_name e.g. document, media etc)
+                        //copy      kya copy kro    paste
+        copyFileToDest(srcPath, fullPathOfFile, folderName);
+      }
     }
-  }
 }
 
-function getFolderName(ext){
 
-  for(let key in types){
-    for(let i = 0; i < types[key].length; i++){
-      if(types[key] == ext){
-        return key
+function getFolderName(ext) {
+  //magic
+  for (let key in types) {
+    // console.log(key);
+    for (let i = 0; i < types[key].length; i++) {
+      if (types[key][i] == ext) {
+        return key;
       }
     }
   }
+  return "miscellaneous"
 }
 
-function copyFileToDest(srcPath, fullPathOfFile, folderName){
+function copyFileToDest(srcPath, fullPathOfFile, folderName) {
+  //1. folderName ka path banana h
+  let destFolderPath = path.join(srcPath, "organized_files", folderName); //....../downloads/organized_files/archives
+  // console.log(des);
+  //2 check folder if exists, if it does not, then make folder
 
-  let destFolderPath = path.join(srcPath, "organised_files", folderName)
-  if(!fs.existsSync(destFolderPath)){
-    fs.mkdirSync(destFolderPath)
+  if (!fs.existsSync(destFolderPath)) {
+    fs.mkdirSync(destFolderPath);
   }
+  //3. copy file from src folder to dest folder
 
-  let fileName = path.basename(fullPathOfFile)
-  let destFileName = path.join(destFolderPath, fileName)
-  fs.copyFileSync(fullPathOfFile, destFileName)
-
+  // Returns the last portion of a path
+  let fileName = path.basename(fullPathOfFile); //abc.zip
+  let destFileName = path.join(destFolderPath, fileName);    
+                      // src        dest
+  fs.copyFileSync(fullPathOfFile, destFileName);
+  //magic
 }
 
-let srcPath = "/Users/adityachaurasia/Desktop/Code/Web D/Learning/Node/fileOrganiser/downloads"
-organise(srcPath)
+
+// let srcPath="/Users/abhishekgoel/Desktop/Desktop/AbhishekGoel/FJP5/Node/fileOrganizer/downloads"
+// organize(srcPath);
+
+module.exports = {
+  organize:organize
+}
