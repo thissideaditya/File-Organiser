@@ -1,7 +1,7 @@
 const fs = require("fs")
 const path = require("path")
 
-function treefn(dirPath){
+function treeFn(dirPath){
     if(dirPath == undefined){
         console.log("Please Enter Valid Path")
         return
@@ -34,5 +34,5 @@ function treeHelper(targetPath, indent){
 }
 
 module.exports = {
-    tree: treefn
-}
+    tree: treeFn,
+  };
